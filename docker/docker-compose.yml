@@ -1,0 +1,19 @@
+services:
+  db:
+    build: .
+    image: postgres:16.3
+    restart: always
+    container_name: management-manufacturing-process-db-container
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: mmp
+      LANG: ja_JP.utf8
+      LC_ALL: ja_JP.utf8
+    ports:
+      - "5432:5432"
+    volumes:
+      - mmp_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+volumes:
+    mmp_data:
