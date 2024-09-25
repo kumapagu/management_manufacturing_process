@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: management_manufacturing_process
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
+    database: POSTGRESQL
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mmp
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
