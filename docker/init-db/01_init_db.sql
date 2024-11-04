@@ -8,12 +8,6 @@ DO $$ BEGIN
     END IF;
 END $$;
 
--- create database mmp
---     with ENCODING='UTF8'
---     LC_COLLATE='ja_JP.utf8'
---     LC_CTYPE='ja_JP.utf8'
---     TEMPLATE=template0;
-
 -- updatedAtに現在時刻をセットするFunctionを作成
 create or replace function set_updated_at()
 returns trigger as $$
@@ -22,6 +16,9 @@ begin
     return new;
 end;
 $$ language plpgsql;
+
+-- タイムゾーンを設定
+set time zone 'Asia/Tokyo';
 
 -- テーブル作成
 create table if not exists client (
@@ -46,8 +43,8 @@ comment on column client.updated_at is '更新日時';
 
 create table if not exists billing_condition (
     id serial primary key,
-    billing_year int not null,
-    billing_month int not null,
+    billing_year int,
+    billing_month int,
     is_billing boolean not null default false,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp
@@ -90,8 +87,8 @@ create table if not exists "case" (
     id serial primary key,
     name varchar(50) not null,
     client_id int references "client"(id),
-    case_condition_id int references "case_condition"(id),
-    billing_condition_id int references "billing_condition"(id),
+    case_condition_id int unique references "case_condition"(id),
+    billing_condition_id int unique references "billing_condition"(id),
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp
     );
@@ -114,6 +111,7 @@ create table if not exists vacation_information (
     id serial primary key,
     vacation_day int not null,
     is_passed boolean not null default false,
+    worker_id int references "worker"(id),
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp
 );
@@ -135,7 +133,6 @@ create table if not exists worker (
     worker_name varchar(50) not null,
     worker_name_kana varchar(50) not null,
     is_retirement boolean not null default false,
-    vacation_information_id int references vacation_information(id),
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp
     );
@@ -158,8 +155,8 @@ create type operationType as enum ('assemble', 'dismantle');
 
 create table if not exists schedule (
     id serial primary key,
-    working_day date not null,
-    operation_class operationType not null,
+    working_day date,
+    operation_class operationType,
     case_id int references "case"(id),
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp
@@ -187,17 +184,6 @@ create table if not exists cases_workers (
 comment on table cases_workers is 'アサインテーブル';
 comment on column cases_workers.worker_id is '作業員ID';
 comment on column cases_workers.case_id is '案件ID';
-
-create table if not exists cases_schedules (
-    schedule_id int references schedule(id),
-    case_id int references "case"(id),
-    primary key (schedule_id, case_id)
-    );
-
-comment on table cases_schedules is '工程表アサインテーブル';
-comment on column cases_schedules.schedule_id is '工程表ID';
-comment on column cases_schedules.case_id is '案件ID';
-
 
 alter table "case" add check (id >= 1);
 alter table worker add check (id >= 1);
