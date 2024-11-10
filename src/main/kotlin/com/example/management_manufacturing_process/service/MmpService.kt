@@ -12,4 +12,9 @@ class MmpService {
     fun getClients(): List<ClientEntity> {
         return clientRepository.getAllBy()
     }
+
+    fun registerClient(name: String, nameKana: String): ClientEntity {
+        val clientEntity = ClientEntity(name = name, nameKana = nameKana)
+        return clientRepository.save(clientEntity)
+    }
 }
