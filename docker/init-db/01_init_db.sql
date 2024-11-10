@@ -23,7 +23,7 @@ alter database mmp set time zone 'Asia/Tokyo';
 -- テーブル作成
 create table if not exists client (
     id serial primary key,
-    name varchar(50) not null,
+    name varchar(50) not null unique,
     name_kana varchar(50) not null,
     created_at timestamptz not null default current_timestamp,
     updated_at timestamptz not null default current_timestamp
@@ -36,8 +36,8 @@ execute procedure set_updated_at();
 
 comment on table client is 'クライアントテーブル';
 comment on column client.id is 'クライアントID';
-comment on column client.client_name is 'クライアント名';
-comment on column client.client_name_kana is 'クライアント名(カナ)';
+comment on column client.client_name is '取引先名';
+comment on column client.client_name_kana is '取引先名(カナ)';
 comment on column client.created_at is '作成日時';
 comment on column client.updated_at is '更新日時';
 
@@ -90,8 +90,8 @@ comment on column "case".updated_at is '更新日時';
 
 create table if not exists worker (
     id serial primary key,
-    name varchar(50) not null unique,
-    name_kana varchar(50),
+    name varchar(50) not null,
+    name_kana varchar(50) not null,
     is_retirement boolean not null default false,
     created_at timestamptz not null default current_timestamp,
     updated_at timestamptz not null default current_timestamp
