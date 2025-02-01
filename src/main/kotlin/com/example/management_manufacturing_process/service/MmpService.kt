@@ -10,7 +10,11 @@ class MmpService {
     @Autowired
     lateinit var clientRepository: ClientRepository
     fun getClients(): List<ClientEntity> {
-        return clientRepository.getAllBy()
+        return clientRepository.findAll()
+    }
+
+    fun getClient(id: Long): ClientEntity {
+        return clientRepository.getReferenceById(id)
     }
 
     fun registerClient(name: String, nameKana: String): ClientEntity {
