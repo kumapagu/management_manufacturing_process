@@ -21,4 +21,11 @@ class MmpService {
         val clientEntity = ClientEntity(name = name, nameKana = nameKana)
         return clientRepository.save(clientEntity)
     }
+
+    fun updateClient(id: Long, name: String, nameKana: String): ClientEntity {
+        val clientEntity = clientRepository.getReferenceById(id)
+        clientEntity.name = name
+        clientEntity.nameKana = nameKana
+        return clientRepository.save(clientEntity)
+    }
 }

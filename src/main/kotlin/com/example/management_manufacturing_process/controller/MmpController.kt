@@ -25,13 +25,25 @@ class MmpController {
         return mmpService.getClient(id)
     }
 
-
     @PostMapping("/clients")
     @ResponseStatus(HttpStatus.CREATED)
     fun registerClient(
         @RequestBody @Validated clientRegistrationForm: ClientRegistrationForm
     ): ClientEntity {
         return mmpService.registerClient(
+            clientRegistrationForm.name,
+            clientRegistrationForm.nameKana
+        )
+    }
+
+    @PutMapping("/clients/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun updateClient(
+        @PathVariable id: Long,
+        @RequestBody @Validated clientRegistrationForm: ClientRegistrationForm
+    ): ClientEntity {
+        return mmpService.updateClient(
+            id,
             clientRegistrationForm.name,
             clientRegistrationForm.nameKana
         )

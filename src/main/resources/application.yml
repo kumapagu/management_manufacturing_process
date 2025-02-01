@@ -19,3 +19,7 @@ spring:
 #    user:
 #      name: user
 #      password: pass
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
