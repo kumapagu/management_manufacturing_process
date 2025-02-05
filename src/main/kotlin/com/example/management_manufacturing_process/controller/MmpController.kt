@@ -48,4 +48,12 @@ class MmpController {
             clientRegistrationForm.nameKana
         )
     }
+
+    @DeleteMapping("/clients/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteClient(
+        @PathVariable id: Long
+    ) {
+        mmpService.deleteClient(id)
+    }
 }

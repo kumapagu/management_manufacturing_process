@@ -28,4 +28,8 @@ class MmpService {
         clientEntity.nameKana = nameKana
         return clientRepository.save(clientEntity)
     }
+
+    fun deleteClient(id: Long) {
+        clientRepository.deleteById(id)
+    }
 }
