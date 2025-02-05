@@ -9,12 +9,23 @@ import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
+/**
+ * 案件管理コントローラ
+ *
+ * @author kumagainaoyuki
+ */
 @RestController
 @RequiredArgsConstructor
 class MmpController {
     @Autowired
     lateinit var mmpService: MmpService
 
+    /**
+     * クライアント一覧取得
+     *
+     * @param nameKana クライアント名カナ(任意)
+     * @return クライアント一覧
+     */
     @GetMapping("/clients")
     fun getClients(
         @RequestParam(value = "nameKana", required = false, defaultValue = "") nameKana: String
@@ -22,6 +33,12 @@ class MmpController {
         return mmpService.getClients(nameKana)
     }
 
+    /**
+     * クライアント取得
+     *
+     * @param id クライアントID
+     * @return クライアント
+     */
     @GetMapping("/clients/{id}")
     fun getClient(
         @PathVariable id: Long
@@ -29,6 +46,12 @@ class MmpController {
         return mmpService.getClient(id)
     }
 
+    /**
+     * クライアント登録
+     *
+     * @param clientRegistrationForm クライアント登録フォーム
+     * @return クライアント
+     */
     @PostMapping("/clients")
     @ResponseStatus(HttpStatus.CREATED)
     fun registerClient(
@@ -40,6 +63,13 @@ class MmpController {
         )
     }
 
+    /**
+     * クライアント更新
+     *
+     * @param id クライアントID
+     * @param clientRegistrationForm クライアント登録フォーム
+     * @return クライアント
+     */
     @PutMapping("/clients/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateClient(
@@ -53,6 +83,11 @@ class MmpController {
         )
     }
 
+    /**
+     * クライアント削除
+     *
+     * @param id クライアントID
+     */
     @DeleteMapping("/clients/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteClient(
