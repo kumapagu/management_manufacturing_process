@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ClientRepository: JpaRepository<ClientEntity, Long> {
+    fun findByNameKanaContainingOrderByIdAsc(nameKana: String): List<ClientEntity>
+
+    fun findByOrderById(): List<ClientEntity>
 }

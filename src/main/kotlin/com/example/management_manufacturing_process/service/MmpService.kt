@@ -2,6 +2,7 @@ package com.example.management_manufacturing_process.service
 
 import com.example.management_manufacturing_process.entity.ClientEntity
 import com.example.management_manufacturing_process.repository.ClientRepository
+import io.micrometer.common.util.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Service
 class MmpService {
     @Autowired
     lateinit var clientRepository: ClientRepository
-    fun getClients(): List<ClientEntity> {
-        return clientRepository.findAll()
+    fun getClients(nameKana: String): List<ClientEntity> {
+        if (StringUtils.isBlank(nameKana)) {
+            return clientRepository.findByOrderById()
+        }
+        return clientRepository.findByNameKanaContainingOrderByIdAsc(nameKana)
     }
 
     fun getClient(id: Long): ClientEntity {
