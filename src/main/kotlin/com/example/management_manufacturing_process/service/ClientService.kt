@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
  * @author kumagainaoyuki
  */
 @Service
-class MmpService {
+class ClientService {
     @Autowired
     lateinit var clientRepository: ClientRepository
 

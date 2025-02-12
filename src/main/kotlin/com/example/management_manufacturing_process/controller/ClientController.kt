@@ -2,7 +2,7 @@ package com.example.management_manufacturing_process.controller
 
 import com.example.management_manufacturing_process.entity.ClientEntity
 import com.example.management_manufacturing_process.form.ClientRegistrationForm
-import com.example.management_manufacturing_process.service.MmpService
+import com.example.management_manufacturing_process.service.ClientService
 import lombok.RequiredArgsConstructor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequiredArgsConstructor
-class MmpController {
+class ClientController {
     @Autowired
-    lateinit var mmpService: MmpService
+    lateinit var clientService: ClientService
 
     /**
      * クライアント一覧取得
@@ -30,7 +30,7 @@ class MmpController {
     fun getClients(
         @RequestParam(value = "nameKana", required = false, defaultValue = "") nameKana: String
     ): List<ClientEntity> {
-        return mmpService.getClients(nameKana)
+        return clientService.getClients(nameKana)
     }
 
     /**
@@ -43,7 +43,7 @@ class MmpController {
     fun getClient(
         @PathVariable id: Long
     ): ClientEntity {
-        return mmpService.getClient(id)
+        return clientService.getClient(id)
     }
 
     /**
@@ -57,7 +57,7 @@ class MmpController {
     fun registerClient(
         @RequestBody @Validated clientRegistrationForm: ClientRegistrationForm
     ): ClientEntity {
-        return mmpService.registerClient(
+        return clientService.registerClient(
             clientRegistrationForm.name,
             clientRegistrationForm.nameKana
         )
@@ -76,7 +76,7 @@ class MmpController {
         @PathVariable id: Long,
         @RequestBody @Validated clientRegistrationForm: ClientRegistrationForm
     ): ClientEntity {
-        return mmpService.updateClient(
+        return clientService.updateClient(
             id,
             clientRegistrationForm.name,
             clientRegistrationForm.nameKana
@@ -93,6 +93,6 @@ class MmpController {
     fun deleteClient(
         @PathVariable id: Long
     ) {
-        mmpService.deleteClient(id)
+        clientService.deleteClient(id)
     }
 }
