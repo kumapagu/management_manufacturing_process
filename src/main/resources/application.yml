@@ -12,7 +12,14 @@ spring:
     username: root
     password: root
     driver-class-name: org.postgresql.Driver
-  security:
-    user:
-      name: user
-      password: pass
+  # 開発中はセキュリティを外す
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+#  security:
+#    user:
+#      name: user
+#      password: pass
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true

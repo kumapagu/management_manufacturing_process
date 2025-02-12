@@ -14,11 +14,11 @@ data class ClientEntity (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = -1,
 
-    @Column(name = "client_name")
-    var clientName: String = "",
+    @Column(name = "name", nullable = false)
+    var name: String = "",
 
-    @Column(name = "client_name_kana")
-    var clientNameKana: String = "",
+    @Column(name = "name_kana", nullable = false)
+    var nameKana: String = "",
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
