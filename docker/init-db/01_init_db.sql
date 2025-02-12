@@ -36,31 +36,10 @@ execute procedure set_updated_at();
 
 comment on table client is 'クライアントテーブル';
 comment on column client.id is 'クライアントID';
-comment on column client.client_name is '取引先名';
-comment on column client.client_name_kana is '取引先名(カナ)';
+comment on column client.name is '取引先名';
+comment on column client.name_kana is '取引先名(カナ)';
 comment on column client.created_at is '作成日時';
 comment on column client.updated_at is '更新日時';
-
-create table if not exists billing_condition (
-    id serial primary key,
-    billing_year int,
-    billing_month int,
-    is_billing boolean not null default false,
-    created_at timestamptz not null default current_timestamp,
-    updated_at timestamptz not null default current_timestamp
-    );
-
-create trigger set_updated_at
-    before update on billing_condition
-    for each row
-    execute procedure set_updated_at();
-
-comment on table billing_condition is '請求状態テーブル';
-comment on column billing_condition.id is '請求状態ID';
-comment on column billing_condition.billing_year is '請求年';
-comment on column billing_condition.billing_month is '請求月';
-comment on column billing_condition.created_at is '作成日時';
-comment on column billing_condition.updated_at is '更新日時';
 
 -- 案件状態が未着手、進行中、完了のenumを作成
 create type caseConditionType as enum ('notStart', 'inProgress', 'completed');
@@ -69,7 +48,6 @@ create table if not exists "case" (
     name varchar(50) not null,
     client_id int references "client"(id),
     condition caseConditionType not null default 'notStart',
-    billing_condition_id int unique references "billing_condition"(id),
     created_at timestamptz not null default current_timestamp,
     updated_at timestamptz not null default current_timestamp
     );
@@ -84,9 +62,31 @@ comment on column "case".id is '案件ID';
 comment on column "case".name is '案件名';
 comment on column "case".client_id is 'クライアントID';
 comment on column "case".condition is '案件状況';
-comment on column "case".billing_condition_id is '請求状況ID';
 comment on column "case".created_at is '作成日時';
 comment on column "case".updated_at is '更新日時';
+
+create table if not exists billing_condition (
+    id serial primary key,
+    billing_year int,
+    billing_month int,
+    is_billing boolean not null default false,
+    case_id int unique references "case"(id),
+    created_at timestamptz not null default current_timestamp,
+    updated_at timestamptz not null default current_timestamp
+);
+
+create trigger set_updated_at
+    before update on billing_condition
+    for each row
+    execute procedure set_updated_at();
+
+comment on table billing_condition is '請求状態テーブル';
+comment on column billing_condition.id is '請求状態ID';
+comment on column billing_condition.billing_year is '請求年';
+comment on column billing_condition.billing_month is '請求月';
+comment on column billing_condition.case_id is '案件ID';
+comment on column billing_condition.created_at is '作成日時';
+comment on column billing_condition.updated_at is '更新日時';
 
 create table if not exists worker (
     id serial primary key,
@@ -103,8 +103,8 @@ create trigger set_updated_at
     execute procedure set_updated_at();
 
 comment on table worker is '従業員テーブル';
-comment on column worker.worker_name is '従業員名';
-comment on column worker.worker_name_kana is '従業員名(カナ)';
+comment on column worker.name is '従業員名';
+comment on column worker.name_kana is '従業員名(カナ)';
 comment on column worker.is_retirement is '退職フラグ';
 comment on column worker.created_at is '作成日時';
 comment on column worker.updated_at is '更新日時';
