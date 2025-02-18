@@ -48,6 +48,7 @@ create table if not exists "case" (
     name varchar(50) not null,
     client_id int references "client"(id),
     condition caseConditionType not null default 'notStart',
+    address varchar(100),
     created_at timestamptz not null default current_timestamp,
     updated_at timestamptz not null default current_timestamp
     );
@@ -62,6 +63,7 @@ comment on column "case".id is '案件ID';
 comment on column "case".name is '案件名';
 comment on column "case".client_id is 'クライアントID';
 comment on column "case".condition is '案件状況';
+comment on column "case".address is '住所';
 comment on column "case".created_at is '作成日時';
 comment on column "case".updated_at is '更新日時';
 
