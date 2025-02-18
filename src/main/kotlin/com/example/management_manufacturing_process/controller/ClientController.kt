@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/clients")
 class ClientController {
     @Autowired
     lateinit var clientService: ClientService
@@ -26,7 +27,7 @@ class ClientController {
      * @param nameKana クライアント名カナ(任意)
      * @return クライアント一覧
      */
-    @GetMapping("/clients")
+    @GetMapping
     fun getClients(
         @RequestParam(value = "nameKana", required = false, defaultValue = "") nameKana: String
     ): List<ClientEntity> {
@@ -39,7 +40,7 @@ class ClientController {
      * @param id クライアントID
      * @return クライアント
      */
-    @GetMapping("/clients/{id}")
+    @GetMapping("/{id}")
     fun getClient(
         @PathVariable id: Long
     ): ClientEntity {
@@ -52,7 +53,7 @@ class ClientController {
      * @param clientRegistrationForm クライアント登録フォーム
      * @return クライアント
      */
-    @PostMapping("/clients")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun registerClient(
         @RequestBody @Validated clientRegistrationForm: ClientRegistrationForm
@@ -70,7 +71,7 @@ class ClientController {
      * @param clientRegistrationForm クライアント登録フォーム
      * @return クライアント
      */
-    @PutMapping("/clients/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateClient(
         @PathVariable id: Long,
@@ -88,7 +89,7 @@ class ClientController {
      *
      * @param id クライアントID
      */
-    @DeleteMapping("/clients/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteClient(
         @PathVariable id: Long
