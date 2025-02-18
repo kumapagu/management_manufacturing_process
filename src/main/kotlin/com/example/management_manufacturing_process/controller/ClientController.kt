@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
- * 案件管理コントローラ
+ * クライアントコントローラ
  *
  * @author kumagainaoyuki
  */
