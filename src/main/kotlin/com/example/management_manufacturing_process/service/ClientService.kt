@@ -5,6 +5,8 @@ import com.example.management_manufacturing_process.repository.ClientRepository
 import io.micrometer.common.util.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
+import kotlin.jvm.optionals.getOrElse
 
 /**
  * 案件管理サービス
@@ -36,7 +38,7 @@ class ClientService {
      * @return クライアント
      */
     fun getClient(id: Long): ClientEntity {
-        return clientRepository.getReferenceById(id)
+        return clientRepository.findById(id).getOrElse { throw IllegalArgumentException("クライアントが見つかりません") }
     }
 
     /**
@@ -60,10 +62,14 @@ class ClientService {
      * @return クライアント
      */
     fun updateClient(id: Long, name: String, nameKana: String): ClientEntity {
-        val clientEntity = clientRepository.getReferenceById(id)
-        clientEntity.name = name
-        clientEntity.nameKana = nameKana
-        return clientRepository.save(clientEntity)
+        val clientEntityOpt = clientRepository.findById(id)
+        if (!clientEntityOpt.isEmpty) {
+            val clientEntity = clientEntityOpt.get()
+            clientEntity.name = name
+            clientEntity.nameKana = nameKana
+            return clientRepository.save(clientEntity)
+        }
+        throw IllegalArgumentException("クライアントが存在しません")
     }
 
     /**
