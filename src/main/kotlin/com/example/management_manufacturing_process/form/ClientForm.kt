@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size
 import lombok.Data
 
 @Data
-data class ClientRegistrationForm (
+data class ClientForm (
     @field:NotEmpty(message = "取引先名を入力してください")
     @field:Size(max = 255, message = "名前は255文字以内で入力してください")
     var name: String,

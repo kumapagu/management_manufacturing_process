@@ -1,7 +1,7 @@
 package com.example.management_manufacturing_process.controller
 
 import com.example.management_manufacturing_process.entity.ClientEntity
-import com.example.management_manufacturing_process.form.ClientRegistrationForm
+import com.example.management_manufacturing_process.form.ClientForm
 import com.example.management_manufacturing_process.service.ClientService
 import lombok.RequiredArgsConstructor
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,17 +50,17 @@ class ClientController {
     /**
      * クライアント登録
      *
-     * @param clientRegistrationForm クライアント登録フォーム
+     * @param clientForm クライアント登録フォーム
      * @return クライアント
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun registerClient(
-        @RequestBody @Validated clientRegistrationForm: ClientRegistrationForm
+        @RequestBody @Validated clientForm: ClientForm
     ): ClientEntity {
         return clientService.registerClient(
-            clientRegistrationForm.name,
-            clientRegistrationForm.nameKana
+            clientForm.name,
+            clientForm.nameKana
         )
     }
 
@@ -68,19 +68,18 @@ class ClientController {
      * クライアント更新
      *
      * @param id クライアントID
-     * @param clientRegistrationForm クライアント登録フォーム
+     * @param clientForm クライアント登録フォーム
      * @return クライアント
      */
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateClient(
         @PathVariable id: Long,
-        @RequestBody @Validated clientRegistrationForm: ClientRegistrationForm
+        @RequestBody @Validated clientForm: ClientForm
     ): ClientEntity {
         return clientService.updateClient(
             id,
-            clientRegistrationForm.name,
-            clientRegistrationForm.nameKana
+            clientForm.name,
+            clientForm.nameKana
         )
     }
 
